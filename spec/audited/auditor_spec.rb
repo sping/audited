@@ -320,7 +320,8 @@ describe Audited::Auditor do
     end
 
     it "should store all the audited attributes" do
-      expect(user.audits.first.audited_changes).to eq(user.audited_attributes)
+      changes = user.audits.first.audited_changes
+      expect(changes).to eq(user.audited_attributes)
     end
 
     it "should store enum value" do
@@ -751,6 +752,12 @@ describe Audited::Auditor do
 
     it "should be nil if given a time before audits" do
       expect(user.revision_at( 1.week.ago )).to be_nil
+    end
+
+    if ENV['DB'] == 'POSTGRES'
+      it "should store the json array successfully" do
+        expect(user.revision_at(DateTime.now).favourite_colours).to eq(user.favourite_colours)
+      end
     end
   end
 

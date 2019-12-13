@@ -42,6 +42,10 @@ ActiveRecord::Schema.define do
     t.column :updated_at, :datetime
     t.column :favourite_device, :string
     t.column :ssn, :integer
+
+    if ENV['DB'] == 'POSTGRES'
+      t.column :favourite_colours, :json
+    end
   end
 
   create_table :companies do |t|
